@@ -1,7 +1,11 @@
 package com.jetbraind.repeat.string;
 
+import com.sun.deploy.util.StringUtils;
+import com.sun.org.apache.xml.internal.utils.StringBufferPool;
+
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.*;
 
 /**
  * String是在java.lang包下的一个类，被final关键字修饰，即不可以被继承，
@@ -131,7 +135,6 @@ public class StringRepeat {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
         bytes = str.getBytes(Charset.defaultCharset());
         bytes = str.getBytes();
 
@@ -162,9 +165,182 @@ public class StringRepeat {
         System.out.println(count);
 
         /**
-         * 忽略大小写比较
+         * 忽略大小写比较大小
          */
         count = str.compareToIgnoreCase("5D25");
         System.out.println(count);
+
+        /**
+         * 判断在指定范围内，两个字符串是否相等
+         * 第一个参数是元字符串的偏移量，偏移3位，指向的是4
+         * 第二个参数是目标字符串
+         * 第三个参数是目标字符串的偏移量
+         * 第四个参数是比较的长度
+         */
+        str = "123456789";
+        boolean flag = str.regionMatches(3, "456", 0, 3);
+        System.out.println(flag);
+
+        /**
+         * 和上一个方法用法一样，只不过加了第一个参数是判断是否忽略大小写的判断
+         * 如果第一个参数是true，则忽略大小写
+         */
+        str = "abcdefg";
+        flag = str.regionMatches(true, 3, "DEF", 0, 3);
+        System.out.println(flag);
+
+        /**
+         * 判断字符串从是否以指定的字符开始,
+         * 第一个参数需要判断的字符，
+         * 第二个参数是偏移量
+         */
+        flag = str.startsWith("ab", 0);
+        System.out.println(flag);
+
+        /**
+         * 判断字符串从是否以指定的字符开始,
+         * 第一个参数需要判断的字符，偏移量为0的情况
+         */
+        flag = str.startsWith("ab");
+        System.out.println(flag);
+
+        /**
+         * 判断是否以指定的字符串结尾
+         */
+        flag = str.endsWith("fg");
+        System.out.println(flag);
+
+        /**
+         * 字符串的hash值
+         */
+        code = str.hashCode();
+        System.out.println(code);
+
+        /**
+         * 判断字符串参数是否包含在源字符串中，并返回和源字符串第一个字符的偏移量
+         * 不存在则会返回-1
+         */
+        int a = str.indexOf("df");
+        System.out.println(a);
+        /**
+         * 和上一个方法一样，只不过传入的是字符串的Unicode值，会把当前数值转换为一个字节来比较
+         */
+        a = str.indexOf(98);
+        System.out.println(a);
+
+        /**
+         *从指定位置开始判断，传入的数值是否存在，返回第一次出现位置和字符串整体相比的偏移量
+         * 第二个参数表示从哪一个位置开始判断
+         */
+        a = str.indexOf(98, 1);
+        System.out.println(a);
+
+        /**
+         * 判断指定字符串是否存在，返回最后一次出现在字符串中的位置
+         */
+        str = "123456789";
+        int position = str.lastIndexOf("9");
+        System.out.println(position);
+
+        /**
+         * 从第二个参数开始，从右向左第一个参数最后一次出现的位置
+         */
+        String data = "2365683";
+        position = data.lastIndexOf("6", 5);
+        System.out.println(position);
+
+        /**
+         * 从指定位置开始截取字符串
+         */
+        str = "123456789";
+        String subStr = str.substring(2);
+        System.out.println(subStr);
+
+        /**
+         * 从开始位置截取到结束位置
+         */
+        str = "21358334";
+        subStr = str.substring(1, 3);
+        System.out.println(subStr);
+
+        /**
+         * 从Charsequence中截取指定长度的字符串
+         */
+        CharSequence charSequence = "123456789";
+        charSequence = charSequence.subSequence(1, 4);
+        System.out.println(charSequence);
+
+        /**
+         * 拼接字符串
+         */
+        str = "123";
+        s = "456";
+        String concat = str.concat(s);
+        System.out.println(concat);
+
+        /**
+         * 替换指定的字符
+         */
+        str = "2233445566";
+        str = str.replace('4', '3');
+        System.out.println(str);
+
+        /**
+         * 使用正则表达式判断是否匹配
+         */
+        str = "0123456";
+        flag = str.matches("[0-9]*");
+        System.out.println(flag);
+
+        /**
+         * 是否包含指定的字符串
+         */
+        str = "123456";
+        flag = str.contains("23");
+        System.out.println(flag);
+
+        /**
+         * 这个传递的是一个可变字符串参数，在每一个参数后面加上传递的第一个字符串
+         */
+        str = String.join("123", "456", "789", "000");
+        System.out.println(str);
+
+        /**
+         * 转大写
+         */
+        str = "abc";
+        str = str.toUpperCase();
+        System.out.println(str);
+
+        /**
+         * 转小写
+         */
+        str = "ABC";
+        str = str.toLowerCase();
+        System.out.println(str);
+
+        /**
+         * 去掉前后空格
+         */
+        str = "  123 456 ";
+        str = str.trim();
+        System.out.print(str);
+        System.out.print(str);
+        System.out.println();
+        /**
+         * 转换成字符数组
+         */
+        str = "123456";
+        ch = str.toCharArray();
+
+        String sf = String.format("123???", "1", "2", "3");
+        System.out.println(sf);
+        /**
+         * 把数字转换成字符串
+         */
+        int i = 132456;
+        str = String.valueOf(i);
+        System.out.println(str);
     }
+
 }
